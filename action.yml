@@ -1,0 +1,40 @@
+name: 'AssurePort Security Check'
+description: 'Free, passive security-posture check (headers, TLS, SSO/MFA, email auth, DNSSEC, HSTS) for a domain you own — powered by AssurePort.'
+author: 'AssurePort'
+
+# Shown on the GitHub Marketplace listing.
+branding:
+  icon: 'shield'
+  color: 'orange'
+
+inputs:
+  domain:
+    description: 'The domain YOU own and are authorised to test (e.g. example.com). All checks are passive and read-only.'
+    required: true
+  api-base:
+    description: 'AssurePort public API base URL.'
+    required: false
+    default: 'https://api.assureport.com'
+  comment-pr:
+    description: 'Post the report as a pull-request comment (needs permissions: pull-requests: write). The step summary is always written.'
+    required: false
+    default: 'true'
+  fail-on-headers-grade:
+    description: 'Fail the job when the security-headers grade is worse than this letter (A–F), e.g. "C". Leave empty to never fail the build.'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run AssurePort security check
+      shell: bash
+      env:
+        APRT_DOMAIN: ${{ inputs.domain }}
+        APRT_API_BASE: ${{ inputs.api-base }}
+        APRT_COMMENT_PR: ${{ inputs.comment-pr }}
+        APRT_FAIL_GRADE: ${{ inputs.fail-on-headers-grade }}
+        GH_TOKEN: ${{ github.token }}
+        GH_EVENT_PATH: ${{ github.event_path }}
+        GH_REPO: ${{ github.repository }}
+      run: bash "${{ github.action_path }}/check.sh"
