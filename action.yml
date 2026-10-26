@@ -1,5 +1,5 @@
 name: 'AssurePort Security Check'
-description: 'Free, passive security-posture check (headers, TLS, SSO/MFA, email auth, DNSSEC, HSTS) for a domain you own — powered by AssurePort.'
+description: 'Passive security check (headers, TLS, SSO/MFA, email auth, DNSSEC, HSTS) for a domain you own. By AssurePort.'
 author: 'AssurePort'
 
 # Shown on the GitHub Marketplace listing.
